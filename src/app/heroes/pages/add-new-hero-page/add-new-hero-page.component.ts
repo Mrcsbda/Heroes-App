@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-add-new-hero-page',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './add-new-hero-page.component.scss'
 })
 export class AddNewHeroPageComponent {
-
+  public publishers = [{
+    id: 'DC Comics',
+    desc: 'DC - Comics'
+  }, {
+    id: 'Marvel Comics',
+    desc: 'Marvel - Comics'
+  }];
 }
