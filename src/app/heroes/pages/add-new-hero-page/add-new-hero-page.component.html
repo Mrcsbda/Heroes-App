@@ -1,4 +1,4 @@
-<h1> Editar / Agregar Héroe <small>Superman</small></h1>
+<h1> {{currentHero.id ? 'Editar' : 'Agregar'}} Héroe <small>Superman</small></h1>
 
 <mat-divider class="mb-2"></mat-divider>
 
@@ -49,7 +49,7 @@
   </div>
   <div class="col-12 sm:col-6">
     <mat-card>
-      <img src="" alt="imagen del heroe" mat-card-image>
+      <img [src]="currentHero | heroImage" alt="imagen del heroe" mat-card-image>
     </mat-card>
   </div>
 </div>
