@@ -4,6 +4,9 @@ import {Hero, Publisher} from "../../interfaces/hero.interface";
 import {HeroesService} from "../../services/heroes.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmDialogComponent} from "../../components/confirm-dialog/confirm-dialog.component";
+import { switchMap, filter} from "rxjs";
 
 @Component({
   selector: 'app-add-new-hero-page',
@@ -30,7 +33,8 @@ export class AddNewHeroPageComponent implements OnInit {
     private heroesService: HeroesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private dialog: MatDialog
   ) {
   }
 
@@ -62,6 +66,24 @@ export class AddNewHeroPageComponent implements OnInit {
       this.showSnackbar(`${hero.superhero} created!`)
 
     })
+  }
+
+  onDeleteHero() {
+    if (!this.currentHero.id) throw Error('Hero id is required')
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: this.heroForm.value
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        filter((result: boolean) => result),
+        switchMap(() => this.heroesService.deleteHeroById(this.currentHero.id)),
+        filter((wasDeleted: boolean) => wasDeleted),
+      )
+      .subscribe(result => {
+        this.router.navigate(['/heroes'])
+        this.showSnackbar(`${this.currentHero.superhero} deleted!`)
+      })
   }
 
   showSnackbar(message: string) {
